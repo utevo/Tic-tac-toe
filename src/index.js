@@ -39,8 +39,15 @@ class Board extends React.Component {
   }
 
   render() {
-    const charOfNextPlayer = this.state.xIsNext ? 'X' : 'O';
-    const status = `Next player: ${charOfNextPlayer}`;
+    const winner = calculateWinner(this.state.squares);
+    let status;
+
+    if (winner) {
+      status = `Winner: ${winner}`;
+    } else {
+      const charOfNextPlayer = this.state.xIsNext ? 'X' : 'O';
+      status = `Next player: ${charOfNextPlayer}`;
+    }
 
     return (
       <div>
@@ -79,6 +86,28 @@ class Game extends React.Component {
       </div>
     );
   }
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [0, 4, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+    [3, 4, 5],
+    [6, 7, 8],
+  ]
+
+  for (let line of lines) {
+    let chars = line.map(index => squares[index]);
+
+    // if all chars are the same
+    if (chars[0] === chars[1] && chars[1] === chars[2])
+      return chars[0];
+  }
+  return null;
 }
 
 // ========================================
